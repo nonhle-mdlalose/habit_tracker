@@ -1,6 +1,7 @@
 from datetime import datetime
 import time
 from plyer import notification
+import os
 
 #global variables
 monday = []
@@ -108,22 +109,17 @@ def check_reminders_for_day():
 def check_time():
     try:
 
-            time_now= dt.strftime("%H:%M").lower()
-            list_item = check_reminders_for_day()
-            for i in list_item:
-                if '13:57' in i.values():
-                    notification.notify(
-                        # title of the notification,
-                        title="Hey! Here is your reminder to {} :",
-                        # the body of the notification
-                        message='\n {}',
-                        # the notification stays for 50sec
-                        timeout=10
-                    )
-                    time.sleep(7)
-                else:
-                    print("not")
-                    continue
+        time_now= dt.strftime("%H:%M").lower()
+        list_item = check_reminders_for_day()
+        for i in list_item:
+            if '13:57' in i.values():
+                print(i)
+                os.system(f"""
+                          osascript -e 'display notification "{i["notes"]}" with title "{i["name"]}"'
+                          """)
+                print("worked")
+            else:
+                continue
     except Exception as e:
         print(e)
 
